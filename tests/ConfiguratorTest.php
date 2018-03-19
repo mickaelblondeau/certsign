@@ -1,11 +1,18 @@
 <?php
 
+namespace YllyCertSign\Tests;
+
+use PHPUnit\Framework\TestCase;
 use YllyCertSign\Configurator;
+use YllyCertSign\Exception\NotFoundEnvironnementException;
 use YllyCertSign\Factory\SignatorFactory;
 use YllyCertSign\Signator;
 
-class ConfiguratorTest extends \PHPUnit\Framework\TestCase
+class ConfiguratorTest extends TestCase
 {
+    /**
+     * @throws NotFoundEnvironnementException
+     */
     public function testConfigureFromArray()
     {
         $config = Configurator::loadFromFile(__DIR__ . '/config.yml');
@@ -14,6 +21,9 @@ class ConfiguratorTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($signator instanceof Signator);
     }
 
+    /**
+     * @throws NotFoundEnvironnementException
+     */
     public function testConfigureFromArrayWithProxy()
     {
         $config = Configurator::loadFromFile(__DIR__ . '/config.yml');
@@ -23,6 +33,9 @@ class ConfiguratorTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($signator instanceof Signator);
     }
 
+    /**
+     * @throws NotFoundEnvironnementException
+     */
     public function testConfigureFromFile()
     {
         $signator = SignatorFactory::createFromYamlFile(__DIR__ . '/config.yml');

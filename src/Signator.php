@@ -162,10 +162,12 @@ class Signator
     private function signRequest($orderId, $otp)
     {
         if (!empty($otp)) {
-            return $this->client->post('/ephemeral/trigger/signatures/sign?mode=SYNC&orderRequestId=' . $orderId . '&otp=' . $otp);
+            $url = '/ephemeral/trigger/signatures/sign?mode=SYNC&orderRequestId=' . $orderId . '&otp=' . $otp;
         } else {
-            return $this->client->post('/ephemeral/signatures/sign?mode=SYNC&orderRequestId=' . $orderId);
+            $url = '/ephemeral/signatures/sign?mode=SYNC&orderRequestId=' . $orderId;
         }
+
+        return $this->client->post($url);
     }
 
     /**

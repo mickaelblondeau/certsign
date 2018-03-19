@@ -3,38 +3,70 @@
 namespace YllyCertSign\Client\Sign;
 
 use YllyCertSign\Client\AbstractClient;
+use YllyCertSign\Exception\NotFoundEnvironnementException;
 
 class SignClient extends AbstractClient implements SignClientInterface
 {
+    /**
+     * @var string
+     */
     private $environnement;
 
+    /**
+     * @var string
+     */
     private $certPath;
 
+    /**
+     * @var string
+     */
     private $certPassword;
 
+    /**
+     * @var null|string
+     */
     private $proxy;
 
+    /**
+     * @var array
+     */
     private $endPoints = [
         'prod' => 'https://sign.certeurope.fr',
         'test' => 'https://sign-sandbox.certeurope.fr'
     ];
 
+    /**
+     * @param string $environnement
+     * @param string $certPath
+     * @param string $certPassword
+     * @param string|null $proxy
+     * @throws NotFoundEnvironnementException
+     */
     public function __construct($environnement, $certPath, $certPassword, $proxy)
     {
         $this->environnement = $environnement;
         if (!isset($this->endPoints[$this->environnement])) {
-            throw new \Exception('Environnement not found');
+            throw new NotFoundEnvironnementException('Environnement not found');
         }
+
         $this->certPath = $certPath;
         $this->certPassword = $certPassword;
         $this->proxy = $proxy;
     }
 
+    /**
+     * @return string
+     */
     private function getEndpoint()
     {
         return $this->endPoints[$this->environnement];
     }
 
+    /**
+     * @param string $url
+     * @param string|null $method
+     * @return resource
+     */
     private function createRequest($url, $method = null)
     {
         $curl = curl_init();
@@ -62,6 +94,10 @@ class SignClient extends AbstractClient implements SignClientInterface
         return $curl;
     }
 
+    /**
+     * @param resource $curl
+     * @return object
+     */
     private function getResponse($curl)
     {
         $response = curl_exec($curl);
@@ -72,6 +108,10 @@ class SignClient extends AbstractClient implements SignClientInterface
         return $response;
     }
 
+    /**
+     * @param object $response
+     * @return string
+     */
     private function sanitizeResponse($response)
     {
         $responseObject = json_decode($response);
@@ -86,6 +126,10 @@ class SignClient extends AbstractClient implements SignClientInterface
         return json_encode($responseObject);
     }
 
+    /**
+     * @param string $url
+     * @return object
+     */
     public function get($url)
     {
         $curl = $this->createRequest($url);
@@ -94,6 +138,11 @@ class SignClient extends AbstractClient implements SignClientInterface
         return json_decode($response);
     }
 
+    /**
+     * @param string $url
+     * @param array $content
+     * @return object
+     */
     public function post($url, $content = [])
     {
         $data = json_encode($content);

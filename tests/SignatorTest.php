@@ -1,12 +1,19 @@
 <?php
 
+namespace YllyCertSign\Tests;
+
+use PHPUnit\Framework\TestCase;
 use YllyCertSign\Client\Sign\SignTestClient;
+use YllyCertSign\Exception\WebserviceException;
 use YllyCertSign\Request\Request;
 use YllyCertSign\Request\Signature\Signature;
 use YllyCertSign\Signator;
 
-class SignatorTest extends \PHPUnit\Framework\TestCase
+class SignatorTest extends TestCase
 {
+    /**
+     * @throws WebserviceException
+     */
     public function testCreateSignOrder()
     {
         $client = new SignTestClient();
@@ -29,6 +36,9 @@ class SignatorTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(2, count($documents));
     }
 
+    /**
+     * @throws WebserviceException
+     */
     public function testCreateOTPSignOrder()
     {
         $client = new SignTestClient();

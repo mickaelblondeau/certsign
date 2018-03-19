@@ -4,6 +4,7 @@ namespace YllyCertSign\Factory;
 
 use YllyCertSign\Client\Sign\SignClient;
 use YllyCertSign\Configurator;
+use YllyCertSign\Exception\NotFoundEnvironnementException;
 use YllyCertSign\Signator;
 
 class SignatorFactory
@@ -14,6 +15,7 @@ class SignatorFactory
      * @param string $certPassword
      * @param string|null $proxy
      * @return Signator
+     * @throws NotFoundEnvironnementException
      */
     public static function create($environnement, $certAbsolutePath, $certPassword, $proxy)
     {
@@ -24,6 +26,7 @@ class SignatorFactory
     /**
      * @param array $config
      * @return Signator
+     * @throws NotFoundEnvironnementException
      */
     public static function createFromArray(array $config)
     {
@@ -38,6 +41,7 @@ class SignatorFactory
     /**
      * @param string $absolutePath
      * @return Signator
+     * @throws NotFoundEnvironnementException
      */
     public static function createFromYamlFile($absolutePath)
     {
