@@ -30,6 +30,7 @@ class SignatorFactory
      */
     public static function createFromArray(array $config)
     {
+        return null;
         return self::create(
             $config['env'],
             $config['cert'],
